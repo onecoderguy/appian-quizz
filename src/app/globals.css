@@ -5,6 +5,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --gren: #86BC25;
+  --red: #bb0000;
+  --soft-grey: #d3d3d3;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,5 +26,20 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+.spinner {
+  border: 4px solid var(--soft-grey);
+  border-left-color: var(--green);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
