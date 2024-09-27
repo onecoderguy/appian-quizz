@@ -1,19 +1,20 @@
 "use client"
 
-import QuizzSetupData from "@/interfaces/QuizzSetupData";
-import QuizzSetupTopic from "@/interfaces/QuizzSetupTopic";
+import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
+import QuizzSetupTopicProps from "@/interfaces/QuizzSetupTopicProps";
 import { useState, useEffect } from "react";
 import QuizzButton from "./QuizzButton";
+import QuizzLoader from "./QuizzLoader";
 
 const QuizzSetupStepTopics = ({
-    setupData,
+    quizzSetupData,
     handleQuizzSetupData
 }: {
-    handleQuizzSetupData: (newSetupData: QuizzSetupData) => void,
-    setupData: QuizzSetupData
+    handleQuizzSetupData: (newSetupData: QuizzSetupDataProps) => void,
+    quizzSetupData: QuizzSetupDataProps
 }) => {
 
-    const [topics, setTopics] = useState<QuizzSetupTopic[]>([]);
+    const [topics, setTopics] = useState<QuizzSetupTopicProps[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -26,25 +27,24 @@ const QuizzSetupStepTopics = ({
             });
     }, []);
 
-    const toggleTopics = (toggledTopic: string) => {
-        if (setupData.topics.includes(toggledTopic)) {
-            const newTopicsSetupData = setupData
+    const toggleTopics = (toggledTopic: number) => {
+        if (quizzSetupData.topics.includes(toggledTopic)) {
+            const newTopicsSetupData = quizzSetupData
                 .topics
                 .filter(
                     (topic) => topic !== toggledTopic
                 );
 
             handleQuizzSetupData({
-                ...setupData,
+                ...quizzSetupData,
                 topics: newTopicsSetupData
             });
         } else {
-            const newTopicsSetupData = setupData.topics;
+            const newTopicsSetupData = quizzSetupData.topics;
             newTopicsSetupData.push(toggledTopic);
-            console.log(newTopicsSetupData);
-
+            
             handleQuizzSetupData({
-                ...setupData,
+                ...quizzSetupData,
                 topics: newTopicsSetupData
             });
         };
@@ -59,19 +59,19 @@ const QuizzSetupStepTopics = ({
                 <div className="p-4 rounded-lg">
                     {
                         loading ?
-                            <div className="flex justify-center">
-                                <span className="spinner"></span>
-                            </div>
+                            <QuizzLoader />
                             :
                             <div className="grid grid-cols-2 gap-4">
                                 {topics.map((topic, index) => (
                                     <button
                                         key={index}
-                                        className={`px-4 py-2 rounded-lg border transition ${setupData.topics.includes(topic.topic)
+                                        className={`px-4 py-2 rounded-lg border transition ${quizzSetupData.topics.includes(topic.id)
                                             ? "bg-green text-white border-green"
                                             : "bg-white text-gray-800 border-gray-300"
                                             }`}
-                                        onClick={() => toggleTopics(topic.topic)}
+                                        onClick={
+                                            () => toggleTopics(topic.id)
+                                        }
                                     >
                                         {topic.topic}
                                     </button>
@@ -83,13 +83,13 @@ const QuizzSetupStepTopics = ({
             <div className="flex justify-between gap-2 mt-2">
                 <div>
                     {
-                        setupData.step > 0 &&
+                        quizzSetupData.step > 0 &&
                         <QuizzButton
                             text="Anterior"
                             fn={
                                 () => handleQuizzSetupData({
-                                    ...setupData,
-                                    step: setupData.step - 1
+                                    ...quizzSetupData,
+                                    step: quizzSetupData.step - 1
                                 })
                             }
                         />
@@ -97,14 +97,14 @@ const QuizzSetupStepTopics = ({
                 </div>
                 <div>
                     {
-                        setupData.step < 2 &&
+                        quizzSetupData.step < 2 &&
                         <QuizzButton
                             text="Próximo"
-                            disabled={setupData.topics.length === 0}
+                            disabled={quizzSetupData.topics.length === 0}
                             fn={
                                 () => handleQuizzSetupData({
-                                    ...setupData,
-                                    step: setupData.step + 1
+                                    ...quizzSetupData,
+                                    step: quizzSetupData.step + 1
                                 })
                             }
                         />
