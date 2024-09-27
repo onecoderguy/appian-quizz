@@ -1,5 +1,6 @@
-import conn from "@/services/db"
-import { NextResponse } from "next/server"
+import { NextResponse } from "next/server";
+
+import conn from "@/services/db";
 
 export const GET = async () => {
     try {
@@ -31,10 +32,10 @@ export const GET = async () => {
                     return NextResponse.json({ topics: get.data }, { status: 200 });
                 }
             );
-        }
+        };
 
         return NextResponse.json({ topics: [] }, { status: 500 });
     } catch (error) {
-        return NextResponse.json(("Error: " + (error as Error).message))
+        return NextResponse.json(("Error: " + (error as Error).message));
     }
 }
