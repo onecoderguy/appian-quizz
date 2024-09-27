@@ -1,7 +1,7 @@
-interface QuizzSetupTopic {
+interface QuizzSetupTopicProps {
     id: number,
     topic: string,
     description: string | null
 };
 
-export default QuizzSetupTopic;
+export default QuizzSetupTopicProps;
