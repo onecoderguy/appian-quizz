@@ -1,12 +1,12 @@
-import quizzSetupData from "@/interfaces/quizzSetupData";
+import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
 import QuizzButton from "./QuizzButton";
 
 const QuizzSetupStepCodename = ({
-    setupData,
+    quizzSetupData,
     handleQuizzSetupData
 }: {
-    handleQuizzSetupData: (newSetupData: quizzSetupData) => void,
-    setupData: quizzSetupData
+    handleQuizzSetupData: (newSetupData: QuizzSetupDataProps) => void,
+    quizzSetupData: QuizzSetupDataProps
 }) => {
 
     return (
@@ -20,10 +20,10 @@ const QuizzSetupStepCodename = ({
                     name="codename"
                     id="codename"
                     className="bg-soft-grey text-black outline-none rounded w-full p-3 text-center"
-                    value={setupData.codename || ""}
+                    value={quizzSetupData.codename || ""}
                     onChange={
                         (e) => handleQuizzSetupData({
-                            ...setupData,
+                            ...quizzSetupData,
                             codename: e.target.value
                         })
                     }
@@ -34,11 +34,11 @@ const QuizzSetupStepCodename = ({
                     {
                         <QuizzButton
                             text="Próximo"
-                            disabled={setupData.codename.length < 3}
+                            disabled={quizzSetupData.codename.length < 3}
                             fn={
                                 () => handleQuizzSetupData({
-                                    ...setupData,
-                                    step: setupData.step + 1
+                                    ...quizzSetupData,
+                                    step: quizzSetupData.step + 1
                                 })
                             }
                         />
