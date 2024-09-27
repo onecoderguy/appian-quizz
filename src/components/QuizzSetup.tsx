@@ -1,6 +1,4 @@
-import { Suspense } from "react";
-
-import QuizzSetupData from "@/interfaces/QuizzSetupData";
+import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
 import QuizzSetupStepCodename from "./QuizzSetupStepCodename";
 import QuizzSetupStepTopics from "./QuizzSetupStepTopics";
 import QuizzSetupStepDuration from "./QuizzSetupStepDuration";
@@ -11,12 +9,12 @@ const setupSteps = [
     "duration"
 ];
 
-const QuizzSetup = ({ setupData, setSetupData }: {
-    setupData: QuizzSetupData,
-    setSetupData: (newSetupData: QuizzSetupData) => void
+const QuizzSetup = ({ quizzSetupData, setSetupData }: {
+    quizzSetupData: QuizzSetupDataProps,
+    setSetupData: (newSetupData: QuizzSetupDataProps) => void
 }) => {
 
-    const handleQuizzSetupData = (quizzSetupData: QuizzSetupData) => {
+    const handleQuizzSetupData = (quizzSetupData: QuizzSetupDataProps) => {
         setSetupData(quizzSetupData);
 
         return;
@@ -26,9 +24,9 @@ const QuizzSetup = ({ setupData, setSetupData }: {
         fetch('/api/quizz-start', {
             method: 'POST',
             body: JSON.stringify({
-                codename: setupData.codename,
-                topics: setupData.topics.join(','),
-                duration: setupData.duration
+                codename: quizzSetupData.codename,
+                topics: quizzSetupData.topics.join(','),
+                duration: quizzSetupData.duration
             })
         }).then(() => {
             window.location.reload()
@@ -38,21 +36,21 @@ const QuizzSetup = ({ setupData, setSetupData }: {
     return (
         <>
             {
-                setupSteps[setupData.step] === "codename" &&
+                setupSteps[quizzSetupData.step] === "codename" &&
                 <QuizzSetupStepCodename
-                    setupData={setupData}
+                    quizzSetupData={quizzSetupData}
                     handleQuizzSetupData={handleQuizzSetupData}
                 />
                 ||
-                setupSteps[setupData.step] === "topics" &&
+                setupSteps[quizzSetupData.step] === "topics" &&
                 <QuizzSetupStepTopics
-                    setupData={setupData}
+                    quizzSetupData={quizzSetupData}
                     handleQuizzSetupData={handleQuizzSetupData}
                 />
                 ||
-                setupSteps[setupData.step] === "duration" &&
+                setupSteps[quizzSetupData.step] === "duration" &&
                 <QuizzSetupStepDuration
-                    setupData={setupData}
+                    quizzSetupData={quizzSetupData}
                     handleQuizzSetupData={handleQuizzSetupData}
                     handleQuizzStart={handleQuizzStart}
                 />
