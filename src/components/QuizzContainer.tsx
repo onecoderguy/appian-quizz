@@ -1,53 +1,57 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import QuizzQuestion from "./QuizzQuestion";
 import QuizzSetup from "./QuizzSetup";
+import QuizzQuestion from "./QuizzQuestion";
+import QuizzResult from "./QuizzResult";
 
-import QuizzSetupData from "@/interfaces/QuizzSetupData";
+import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
+import QuizzQuestionProps from "@/interfaces/QuizzQuestionProps";
 
-const questionsData = [
-  {
-    question: "Qual é a capital da França?",
-    options: ["Paris", "Londres", "Berlim", "Madrid"],
-    correctAnswer: "Paris",
-  },
-  {
-    question: "Qual é o maior planeta do sistema solar?",
-    options: ["Terra", "Júpiter", "Marte", "Saturno"],
-    correctAnswer: "Júpiter",
-  },
-];
-
-const QuizContainer = ({ cookie }: { cookie: QuizzSetupData }) => {
+const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
-  const [quizzSetupData, setQuizzSetupData] = useState<QuizzSetupData>(cookie);
+  const [questions, setQuestions] = useState<QuizzQuestionProps[]>([]);
+  const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
+  const [quizzSetupData, setQuizzSetupData] = useState<QuizzSetupDataProps>(cookie);
 
-  const handleAnswerSelect = (answer: string): void => {
+  useEffect(() => {
+    fetch(`/api/questions?topics=${quizzSetupData.topics}`, {
+      method: 'GET'
+    })
+      .then((result) => result.json())
+      .then((result) => setQuestions(result.questions))
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+
+  const handleAnswerSelect = (answer: number): void => {
     const newSelectedAnswers = [...selectedAnswers];
     newSelectedAnswers[currentQuestionIndex] = answer;
     setSelectedAnswers(newSelectedAnswers);
 
-    if (currentQuestionIndex < questionsData.length - 1) {
+    if (currentQuestionIndex < questions.length) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-    // } else {
-    //   setShowResults(true);
-    // }
+    };
   };
 
   const verifyIfHaveActiveQuizz = () => {
     return quizzSetupData.start === null && quizzSetupData.end === null ?
       <QuizzSetup
-        setupData={quizzSetupData}
+        quizzSetupData={quizzSetupData}
         setSetupData={setQuizzSetupData}
-      />
-      :
-      <QuizzQuestion
-        question={questionsData[currentQuestionIndex]}
-        onSelect={handleAnswerSelect}
-      />
+      /> :
+      currentQuestionIndex === questions.length ?
+        <QuizzResult
+          quizzSetupData={quizzSetupData}
+          selectedAnswers={selectedAnswers}
+          questions={questions}
+        /> :
+        questions.length > 0 &&
+        <QuizzQuestion
+          question={questions[currentQuestionIndex]}
+          onSelect={handleAnswerSelect}
+        />
   }
 
   return (
@@ -59,6 +63,5 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupData }) => {
       </div>
     </div>
   );
-};
-
+}
 export default QuizContainer;
