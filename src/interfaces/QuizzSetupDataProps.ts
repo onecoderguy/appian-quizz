@@ -1,10 +1,10 @@
-interface QuizzSetupData {
+interface QuizzSetupDataProps {
     step: number,
     codename: string,
-    topics: string[],
+    topics: number[],
     duration: number,
     start: number | null,
     end: number | null
 }
 
-export default QuizzSetupData;
+export default QuizzSetupDataProps;
