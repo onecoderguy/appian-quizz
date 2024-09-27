@@ -1,9 +1,9 @@
-import QuizzSetupData from "@/interfaces/QuizzSetupData";
+import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
 import QuizzButton from "./QuizzButton";
 
-const QuizzSetupStepDuration = ({ setupData, handleQuizzSetupData, handleQuizzStart }: {
-    setupData: QuizzSetupData,
-    handleQuizzSetupData: (newSetupData: QuizzSetupData) => void,
+const QuizzSetupStepDuration = ({ quizzSetupData, handleQuizzSetupData, handleQuizzStart }: {
+    quizzSetupData: QuizzSetupDataProps,
+    handleQuizzSetupData: (newSetupData: QuizzSetupDataProps) => void,
     handleQuizzStart: () => void
 }) => {
 
@@ -19,10 +19,10 @@ const QuizzSetupStepDuration = ({ setupData, handleQuizzSetupData, handleQuizzSt
                     name="duration"
                     id="codename"
                     className="bg-soft-grey text-black outline-none rounded w-full p-3 text-center"
-                    value={setupData.duration || 0}
+                    value={quizzSetupData.duration || 0}
                     onChange={
                         (e) => handleQuizzSetupData({
-                            ...setupData,
+                            ...quizzSetupData,
                             duration: parseInt(e.target.value)
                         })
                     }
@@ -31,13 +31,13 @@ const QuizzSetupStepDuration = ({ setupData, handleQuizzSetupData, handleQuizzSt
             <div className="flex justify-between gap-2 mt-2">
                 <div>
                     {
-                        setupData.step > 0 &&
+                        quizzSetupData.step > 0 &&
                         <QuizzButton
                             text="Anterior"
                             fn={
                                 () => handleQuizzSetupData({
-                                    ...setupData,
-                                    step: setupData.step - 1
+                                    ...quizzSetupData,
+                                    step: quizzSetupData.step - 1
                                 })
                             }
                         />
@@ -45,10 +45,10 @@ const QuizzSetupStepDuration = ({ setupData, handleQuizzSetupData, handleQuizzSt
                 </div>
                 <div>
                     {
-                        setupData.step === 2 &&
+                        quizzSetupData.step === 2 &&
                         <QuizzButton
                             text="Iniciar"
-                            disabled={setupData.duration < 5}
+                            disabled={quizzSetupData.duration < 5}
                             fn={
                                 () => handleQuizzStart()
                             }
