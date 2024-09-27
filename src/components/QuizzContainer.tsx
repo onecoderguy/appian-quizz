@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import QuizzSetup from "./QuizzSetup";
 import QuizzQuestion from "./QuizzQuestion";
 import QuizzResult from "./QuizzResult";
+import QuizzLoader from "./QuizzLoader";
 
 import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
 import QuizzQuestionProps from "@/interfaces/QuizzQuestionProps";
@@ -35,30 +36,37 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
     };
   };
 
-  const verifyIfHaveActiveQuizz = () => {
-    return quizzSetupData.start === null && quizzSetupData.end === null ?
-      <QuizzSetup
-        quizzSetupData={quizzSetupData}
-        setSetupData={setQuizzSetupData}
-      /> :
-      currentQuestionIndex === questions.length ?
-        <QuizzResult
+  const quizzRouter = () => {
+
+    return (
+      quizzSetupData.start === null &&
+        quizzSetupData.end === null ?
+        <QuizzSetup
           quizzSetupData={quizzSetupData}
-          selectedAnswers={selectedAnswers}
-          questions={questions}
+          setSetupData={setQuizzSetupData}
         /> :
         questions.length > 0 &&
-        <QuizzQuestion
-          question={questions[currentQuestionIndex]}
-          onSelect={handleAnswerSelect}
-        />
+          currentQuestionIndex < questions.length ?
+          <QuizzQuestion
+            question={questions[currentQuestionIndex]}
+            onSelect={handleAnswerSelect}
+          /> :
+          currentQuestionIndex > 0 &&
+            currentQuestionIndex === questions.length ?
+            <QuizzResult
+              quizzSetupData={quizzSetupData}
+              selectedAnswers={selectedAnswers}
+              questions={questions}
+            /> :
+            <QuizzLoader />
+    )
   }
 
   return (
     <div className="flex flex-col items-center justify-center w-screen">
       <div className="bg-white shadow-lg p-6 rounded-lg w-full max-w-xl">
         {
-          verifyIfHaveActiveQuizz()
+          quizzRouter()
         }
       </div>
     </div>
