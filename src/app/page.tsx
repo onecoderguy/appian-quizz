@@ -1,12 +1,12 @@
 import { cookies } from "next/headers";
 
 import QuizContainer from "@/components/QuizzContainer";
-import QuizzSetupData from "@/interfaces/QuizzSetupData";
+import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
 
 export default function Home() {
   const verifyIfHaveActiveQuizz = () => {
     const clientCookie = JSON.parse(cookies().get('client-appian-quizz')?.value ?? "{}");
-    const cookie: QuizzSetupData = {
+    const cookie: QuizzSetupDataProps = {
       codename: clientCookie?.codename ?? "",
       duration: clientCookie?.duration ?? 0,
       end: clientCookie?.end ?? null,
