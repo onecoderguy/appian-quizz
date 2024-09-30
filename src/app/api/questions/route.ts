@@ -15,7 +15,9 @@ export const GET = async (request: NextRequest) => {
         
         if (topicIds) {
             topicIds.forEach(
-                (topicId: string) => {
+                (topicId: string, index: number) => {
+                    index === 0 ?
+                    queryWheres += ` AND q.topicId = ${topicId}` :
                     queryWheres += ` OR q.topicId = ${topicId}`
                 }
             );
@@ -23,9 +25,8 @@ export const GET = async (request: NextRequest) => {
 
         if (result) {
             resultSelect += `,
-            'correctAnswer',
-            a.correctAnswer
-            `
+                'correctAnswer',
+                a.correctAnswer`
         }
 
         const [rows]: [RowDataPacket[], FieldPacket[]] = await conn
@@ -40,17 +41,16 @@ export const GET = async (request: NextRequest) => {
                             'questionId',
                             a.questionId,
                             'answer',
-                            a.answer
-                            ${resultSelect}
+                            a.answer ${resultSelect}
                         )
-                    ) as answers
+                    ) as answers,
+                COUNT (CASE WHEN a.correctAnswer = TRUE THEN 1 END) as correctAnswers
                 FROM
                     questions as q
                     LEFT JOIN answers a ON a.questionId = q.id
                 WHERE
-                    q.active = 0
-                    AND a.active = 1
-                ${queryWheres}
+                    q.active = 1
+                    AND a.active = 1 ${queryWheres}
                 GROUP BY
                     q.id;
             `);
@@ -59,7 +59,8 @@ export const GET = async (request: NextRequest) => {
             id: row.id,
             topicId: row.topicId,
             question: row.question,
-            answers: JSON.parse(row.answers)
+            answers: JSON.parse(row.answers),
+            correctAnswers: row.correctAnswers
         }));
 
         return NextResponse.json({ questions }, { status: 200 });
