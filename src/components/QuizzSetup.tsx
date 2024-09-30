@@ -21,16 +21,20 @@ const QuizzSetup = ({ quizzSetupData, setSetupData }: {
     };
 
     const handleQuizzStart = () => {
-        fetch('/api/quizz-start', {
-            method: 'POST',
-            body: JSON.stringify({
-                codename: quizzSetupData.codename,
-                topics: quizzSetupData.topics.join(','),
-                duration: quizzSetupData.duration
-            })
-        }).then(() => {
-            window.location.reload()
-        })
+        const fetchQuizzStart = (): void => {
+            fetch('/api/quizz-start', {
+                method: 'POST',
+                body: JSON.stringify({
+                    codename: quizzSetupData.codename,
+                    topics: quizzSetupData.topics.join(','),
+                    duration: quizzSetupData.duration
+                })
+            }).then(() => {
+                window.location.reload()
+            });
+        }
+
+        fetchQuizzStart()
     };
 
     return (
