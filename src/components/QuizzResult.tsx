@@ -15,15 +15,19 @@ const QuizzResult = ({ selectedAnswers, questions, quizzSetupData }: {
     const [results, setResults] = useState<QuizzQuestionProps[]>([]);
 
     useEffect(() => {
-        fetch(`/api/questions?topics=${quizzSetupData.topics}&result=true`, {
-            method: 'GET'
-        })
-            .then((result) => result.json())
-            .then((result) => setResults(result.questions))
-            .then(() => setLoading(false))
-            .catch((err) => {
-                console.log(err.message);
-            });
+        const fetchQuestionsResult = (): void => {
+            fetch(`/api/questions?topics=${quizzSetupData.topics}&result=true`, {
+                method: 'GET'
+            })
+                .then((result) => result.json())
+                .then((result) => setResults(result.questions))
+                .then(() => setLoading(false))
+                .catch((err) => {
+                    console.log(err.message);
+                });
+        };
+
+        fetchQuestionsResult();
     }, []);
 
     const getResults = () => {
