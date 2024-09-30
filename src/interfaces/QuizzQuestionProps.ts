@@ -5,7 +5,8 @@ interface QuizzQuestionProps {
     topicId: number | null,
     question: string,
     active?: boolean,
-    answers: QuizzAnswerProps[]
+    answers: QuizzAnswerProps[],
+    correctAnswers: number
 };
 
 export default QuizzQuestionProps;
