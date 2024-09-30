@@ -16,14 +16,18 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
   const [quizzSetupData, setQuizzSetupData] = useState<QuizzSetupDataProps>(cookie);
 
   useEffect(() => {
-    fetch(`/api/questions?topics=${quizzSetupData.topics}`, {
-      method: 'GET'
-    })
-      .then((result) => result.json())
-      .then((result) => setQuestions(result.questions))
-      .catch((err) => {
-        console.log(err.message);
-      });
+    const fetchQuestions = (): void => {
+      fetch(`/api/questions?topics=${quizzSetupData.topics}`, {
+        method: 'GET'
+      })
+        .then((result) => result.json())
+        .then((result) => setQuestions(result.questions))
+        .catch((err) => {
+          console.log(err.message);
+        });
+    };
+
+    fetchQuestions();
   }, []);
 
   const handleAnswerSelect = (answer: number): void => {
