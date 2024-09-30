@@ -18,13 +18,17 @@ const QuizzSetupStepTopics = ({
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        fetch('/api/topics')
-            .then((result) => result.json())
-            .then((result) => setTopics(result.topics))
-            .then(() => setLoading(false))
-            .catch((err) => {
-                console.log(err.message);
-            });
+        const fetchTopics = (): void => {
+            fetch('/api/topics')
+                .then((result) => result.json())
+                .then((result) => setTopics(result.topics))
+                .then(() => setLoading(false))
+                .catch((err) => {
+                    console.log(err.message);
+                });
+        };
+
+        fetchTopics();
     }, []);
 
     const toggleTopics = (toggledTopic: number) => {
@@ -42,7 +46,7 @@ const QuizzSetupStepTopics = ({
         } else {
             const newTopicsSetupData = quizzSetupData.topics;
             newTopicsSetupData.push(toggledTopic);
-            
+
             handleQuizzSetupData({
                 ...quizzSetupData,
                 topics: newTopicsSetupData
