@@ -10,10 +10,10 @@ import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
 import QuizzQuestionProps from "@/interfaces/QuizzQuestionProps";
 
 const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [questions, setQuestions] = useState<QuizzQuestionProps[]>([]);
-  const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [quizzSetupData, setQuizzSetupData] = useState<QuizzSetupDataProps>(cookie);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(quizzSetupData.current ?? 0);
+  const [selectedAnswers, setSelectedAnswers] = useState<number[]>(quizzSetupData.answers ?? []);
 
   useEffect(() => {
     const fetchQuestions = (): void => {
@@ -36,9 +36,24 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
     setSelectedAnswers(newSelectedAnswers);
 
     if (currentQuestionIndex < questions.length) {
+      fetchNextQuestion((currentQuestionIndex + 1).toString(), newSelectedAnswers.toString());
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     };
   };
+
+  const fetchNextQuestion = async (current: string, answers: string): Promise<void> => {
+    fetch('/api/quizz-next-question', {
+      method: 'POST',
+      body: JSON.stringify({
+        current,
+        answers
+      })
+    })
+      .then(() => {})
+      .catch((err) => {
+        console.log(err.message);
+      })
+  }
 
   const quizzRouter = () => {
 
