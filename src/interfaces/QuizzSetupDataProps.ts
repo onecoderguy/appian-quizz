@@ -4,7 +4,9 @@ interface QuizzSetupDataProps {
     topics: number[],
     duration: number,
     start: number | null,
-    end: number | null
+    end: number | null,
+    current?: number,
+    answers?: number[]
 }
 
 export default QuizzSetupDataProps;
