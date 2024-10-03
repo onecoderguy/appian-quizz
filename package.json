@@ -9,9 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "js-cookie": "^3.0.5",
     "mysql2": "^3.11.3",
-    "next": "14.2.8",
+    "next": "^14.2.14",
     "react": "^18",
     "react-dom": "^18"
   },
