@@ -37,7 +37,7 @@ const QuizzResultQuestion = ({ question, result, selectedAnswerId }: {
                 </span>
             </p>
             <p>
-                Resposta correta:
+                Resposta correta:{" "}
                 {
                     getCorrectAnswer()
                 }
