@@ -13,6 +13,8 @@ export default function Home() {
       topics: clientCookie?.topics ?? [],
       start: clientCookie?.start ?? null,
       step: clientCookie?.start ?? 0,
+      answers: clientCookie.answers ? clientCookie.answers.split(',').map((answer: string) => parseInt(answer)) : [],
+      current: clientCookie?.current ? parseInt(clientCookie.current) : 0
     };
 
     return cookie;
