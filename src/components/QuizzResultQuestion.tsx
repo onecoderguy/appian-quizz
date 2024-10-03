@@ -6,6 +6,7 @@ const QuizzResultQuestion = ({ question, result, selectedAnswerId }: {
     result: QuizzQuestionProps,
     selectedAnswerId: number
 }) => {
+
     const getSelectedAnswer = () => {
         const selectedAnswer: QuizzAnswerProps = question.answers.filter((answer) => answer.id === selectedAnswerId)[0];
 
@@ -19,7 +20,9 @@ const QuizzResultQuestion = ({ question, result, selectedAnswerId }: {
     }
 
     return (
-        <li className="p-3 bg-green rounded-lg">
+        <li className={
+            `p-3 rounded-lg ${getCorrectAnswer() === getSelectedAnswer() ? 'bg-green' : 'bg-red'}`
+        }>
             <p className="text-white">
                 <strong>
                     {question.question}
