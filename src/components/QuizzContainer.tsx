@@ -8,6 +8,7 @@ import QuizzLoader from "./QuizzLoader";
 
 import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
 import QuizzQuestionProps from "@/interfaces/QuizzQuestionProps";
+import QuizzTimer from "./QuizzTimer";
 
 const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
   const [questions, setQuestions] = useState<QuizzQuestionProps[]>([]);
@@ -49,7 +50,7 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
         answers
       })
     })
-      .then(() => {})
+      .then(() => { })
       .catch((err) => {
         console.log(err.message);
       })
@@ -83,6 +84,14 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
 
   return (
     <div className="flex flex-col items-center justify-center w-screen">
+      {
+        quizzSetupData.start &&
+        currentQuestionIndex < questions.length &&
+        <QuizzTimer
+          start={quizzSetupData.start}
+          duration={quizzSetupData.duration}
+        />
+      }
       <div className="bg-white shadow-lg p-6 rounded-lg w-full max-w-xl">
         {
           quizzRouter()
