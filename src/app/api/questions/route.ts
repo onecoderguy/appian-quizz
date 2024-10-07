@@ -5,7 +5,7 @@ import conn from "@/services/db"
 
 import QuizzQuestionProps from "@/interfaces/QuizzQuestionProps";
 
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest): Promise<NextResponse> => {
     try {
         const { searchParams } = new URL(request.url)
         const topicIds = searchParams.get('topics')?.split(',');
