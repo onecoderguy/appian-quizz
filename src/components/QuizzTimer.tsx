@@ -1,36 +1,8 @@
-import { useState, useEffect } from 'react';
-
 const QuizzTimer = ({
-    start,
-    duration
+    timeLeft
 }: {
-    start: number;
-    duration: number
+    timeLeft: number | null
 }) => {
-    const [timeLeft, setTimeLeft] = useState<number | null>(null);
-
-    useEffect(() => {
-        const durationInMs = duration * 60 * 1000;
-        const endTime = start + durationInMs;
-
-        const updateCountdown = () => {
-            const currentTime = new Date().getTime();
-            const remainingTime = endTime - currentTime;
-
-            if (remainingTime > 0) {
-                setTimeLeft(remainingTime);
-            } else {
-                setTimeLeft(0);
-                clearInterval(timer);
-            }
-        };
-
-        const timer = setInterval(updateCountdown, 1000);
-
-        updateCountdown();
-
-        return () => clearInterval(timer);
-    }, [start, duration]);
 
     const formatTime = (ms: number) => {
         const totalSeconds = Math.floor(ms / 1000);
