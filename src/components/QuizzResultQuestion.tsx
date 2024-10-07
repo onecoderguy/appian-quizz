@@ -10,7 +10,7 @@ const QuizzResultQuestion = ({ question, result, selectedAnswerId }: {
     const getSelectedAnswer = () => {
         const selectedAnswer: QuizzAnswerProps = question.answers.filter((answer) => answer.id === selectedAnswerId)[0];
 
-        return selectedAnswer.answer;
+        return selectedAnswer?.answer ?? "Sem resposta, tempo esgotado.";
     }
 
     const getCorrectAnswer = () => {
