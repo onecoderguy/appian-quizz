@@ -45,7 +45,7 @@ const QuizzSetupStepDuration = ({ quizzSetupData, handleQuizzSetupData, handleQu
                 </div>
                 <div>
                     {
-                        quizzSetupData.step === 2 &&
+                        quizzSetupData.step === 1 &&
                         <QuizzButton
                             text="Iniciar"
                             disabled={quizzSetupData.duration < 5}
