@@ -15,6 +15,7 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
   const [quizzSetupData, setQuizzSetupData] = useState<QuizzSetupDataProps>(cookie);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(quizzSetupData.current ?? 0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>(quizzSetupData.answers ?? []);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchQuestions = (): void => {
@@ -30,6 +31,29 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
 
     fetchQuestions();
   }, []);
+
+  useEffect(() => {
+    const durationInMs = quizzSetupData.duration * 60 * 1000;
+    const endTime = (quizzSetupData.start ?? 0) + durationInMs;
+
+    const updateCountdown = () => {
+      const currentTime = new Date().getTime();
+      const remainingTime = endTime - currentTime;
+
+      if (remainingTime > 0) {
+        setTimeLeft(remainingTime);
+      } else {
+        setTimeLeft(0);
+        clearInterval(timer);
+      }
+    };
+
+    const timer = setInterval(updateCountdown, 1000);
+
+    updateCountdown();
+
+    return () => clearInterval(timer);
+  }, [quizzSetupData.start, quizzSetupData.duration]);
 
   const handleAnswerSelect = (answer: number): void => {
     const newSelectedAnswers = [...selectedAnswers];
@@ -54,7 +78,7 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
       .catch((err) => {
         console.log(err.message);
       })
-  }
+  };
 
   const quizzRouter = () => {
 
@@ -66,13 +90,15 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
           setSetupData={setQuizzSetupData}
         /> :
         questions.length > 0 &&
-          currentQuestionIndex < questions.length ?
+          currentQuestionIndex < questions.length &&
+          timeLeft && timeLeft > 0 ?
           <QuizzQuestion
             question={questions[currentQuestionIndex]}
             onSelect={handleAnswerSelect}
           /> :
           currentQuestionIndex > 0 &&
-            currentQuestionIndex === questions.length ?
+            currentQuestionIndex === questions.length ||
+            timeLeft === 0 ?
             <QuizzResult
               quizzSetupData={quizzSetupData}
               selectedAnswers={selectedAnswers}
@@ -88,8 +114,7 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
         quizzSetupData.start &&
         currentQuestionIndex < questions.length &&
         <QuizzTimer
-          start={quizzSetupData.start}
-          duration={quizzSetupData.duration}
+          timeLeft={timeLeft}
         />
       }
       <div className="bg-white shadow-lg p-6 rounded-lg w-full max-w-xl">
