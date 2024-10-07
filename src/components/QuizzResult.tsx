@@ -5,6 +5,7 @@ import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
 import QuizzLoader from "./QuizzLoader";
 import QuizzResultQuestion from "./QuizzResultQuestion";
 import QuizzAnswerProps from "@/interfaces/QuizzAnswerProps";
+import QuizzButton from "./QuizzButton";
 
 const QuizzResult = ({ selectedAnswers, questions, quizzSetupData }: {
     quizzSetupData: QuizzSetupDataProps,
@@ -30,22 +31,8 @@ const QuizzResult = ({ selectedAnswers, questions, quizzSetupData }: {
         fetchQuestionsResult();
     }, []);
 
-    const getResults = () => {
-        let countCorrects: number = 0;
-
-        results.forEach((question, index) => {
-            const correctAnswer = question.answers.filter((answer: QuizzAnswerProps) => answer.correctAnswer)[0];
-
-            if (correctAnswer.id === selectedAnswers[index]) {
-                countCorrects++;
-            }
-        });
-
-        return countCorrects;
-    }
-
-    return (
-        loading ?
+    const router = () => {
+        return loading ?
             <QuizzLoader /> :
             <div className="text-center">
                 <h2 className="text-2xl text-black font-bold mb-4">Resultados</h2>
@@ -62,7 +49,44 @@ const QuizzResult = ({ selectedAnswers, questions, quizzSetupData }: {
                         />
                     ))}
                 </ul>
+
+                <div className="mt-3">
+                    <QuizzButton
+                        fn={() => resetQuizz()}
+                        text="Reiniciar Quizz"
+                    />
+                </div>
             </div>
+    }
+
+    const getResults = () => {
+        let countCorrects: number = 0;
+
+        results.forEach((question, index) => {
+            const correctAnswer = question.answers.filter((answer: QuizzAnswerProps) => answer.correctAnswer)[0];
+
+            if (correctAnswer.id === selectedAnswers[index]) {
+                countCorrects++;
+            }
+        });
+
+        return countCorrects;
+    }
+
+    const resetQuizz = () => {
+        const fetchQuizzReset = (): void => {
+            fetch('/api/quizz-reset', {
+                method: 'GET'
+            }).then(() => {
+                window.location.reload()
+            });
+        }
+
+        fetchQuizzReset()
+    }
+
+    return (
+        router()
     );
 };
 
