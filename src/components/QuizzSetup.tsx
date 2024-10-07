@@ -1,10 +1,8 @@
 import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
-import QuizzSetupStepCodename from "./QuizzSetupStepCodename";
 import QuizzSetupStepTopics from "./QuizzSetupStepTopics";
 import QuizzSetupStepDuration from "./QuizzSetupStepDuration";
 
 const setupSteps = [
-    "codename",
     "topics",
     "duration"
 ];
@@ -40,12 +38,6 @@ const QuizzSetup = ({ quizzSetupData, setSetupData }: {
     return (
         <>
             {
-                setupSteps[quizzSetupData.step] === "codename" &&
-                <QuizzSetupStepCodename
-                    quizzSetupData={quizzSetupData}
-                    handleQuizzSetupData={handleQuizzSetupData}
-                />
-                ||
                 setupSteps[quizzSetupData.step] === "topics" &&
                 <QuizzSetupStepTopics
                     quizzSetupData={quizzSetupData}
