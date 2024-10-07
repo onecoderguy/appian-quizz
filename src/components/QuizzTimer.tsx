@@ -2,9 +2,9 @@ const QuizzTimer = ({
     timeLeft
 }: {
     timeLeft: number | null
-}) => {
+}): JSX.Element => {
 
-    const formatTime = (ms: number) => {
+    const formatTime = (ms: number): string => {
         const totalSeconds = Math.floor(ms / 1000);
         const minutes = Math.floor(totalSeconds / 60);
         const seconds = totalSeconds % 60;
@@ -17,7 +17,7 @@ const QuizzTimer = ({
             {
                 timeLeft !== null ? (
                     <>
-                        <h1>Tempo restante: {formatTime(timeLeft)}</h1>
+                        {timeLeft > 0 && <h1>Tempo restante: {formatTime(timeLeft)}</h1>}
                         {timeLeft === 0 && <h2>O tempo acabou!</h2>}
                     </>
                 ) : (

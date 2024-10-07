@@ -10,16 +10,16 @@ const setupSteps = [
 const QuizzSetup = ({ quizzSetupData, setSetupData }: {
     quizzSetupData: QuizzSetupDataProps,
     setSetupData: (newSetupData: QuizzSetupDataProps) => void
-}) => {
+}): JSX.Element => {
 
-    const handleQuizzSetupData = (quizzSetupData: QuizzSetupDataProps) => {
+    const handleQuizzSetupData = (quizzSetupData: QuizzSetupDataProps): void => {
         setSetupData(quizzSetupData);
 
         return;
     };
 
-    const handleQuizzStart = () => {
-        const fetchQuizzStart = (): void => {
+    const handleQuizzStart = async (): Promise<void> => {
+        const fetchQuizzStart = async (): Promise<void> => {
             fetch('/api/quizz-start', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -32,7 +32,7 @@ const QuizzSetup = ({ quizzSetupData, setSetupData }: {
             });
         }
 
-        fetchQuizzStart()
+        await fetchQuizzStart()
     };
 
     return (

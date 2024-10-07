@@ -5,12 +5,13 @@ import QuizzSetup from "./QuizzSetup";
 import QuizzQuestion from "./QuizzQuestion";
 import QuizzResult from "./QuizzResult";
 import QuizzLoader from "./QuizzLoader";
+import QuizzTimer from "./QuizzTimer";
 
 import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
 import QuizzQuestionProps from "@/interfaces/QuizzQuestionProps";
-import QuizzTimer from "./QuizzTimer";
 
-const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
+const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }): JSX.Element => {
+
   const [questions, setQuestions] = useState<QuizzQuestionProps[]>([]);
   const [quizzSetupData, setQuizzSetupData] = useState<QuizzSetupDataProps>(cookie);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(quizzSetupData.current ?? 0);
@@ -36,7 +37,7 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
     const durationInMs = quizzSetupData.duration * 60 * 1000;
     const endTime = (quizzSetupData.start ?? 0) + durationInMs;
 
-    const updateCountdown = () => {
+    const updateCountdown = (): void => {
       const currentTime = new Date().getTime();
       const remainingTime = endTime - currentTime;
 
@@ -61,26 +62,29 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
     setSelectedAnswers(newSelectedAnswers);
 
     if (currentQuestionIndex < questions.length) {
-      fetchNextQuestion((currentQuestionIndex + 1).toString(), newSelectedAnswers.toString());
+      nextQuestion((currentQuestionIndex + 1).toString(), newSelectedAnswers.toString());
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     };
   };
 
-  const fetchNextQuestion = async (current: string, answers: string): Promise<void> => {
-    fetch('/api/quizz-next-question', {
-      method: 'POST',
-      body: JSON.stringify({
-        current,
-        answers
+  const nextQuestion = async (current: string, answers: string): Promise<void> => {
+    const fetchNextQuestion = (): void => {
+      fetch('/api/quizz-next-question', {
+        method: 'POST',
+        body: JSON.stringify({
+          current,
+          answers
+        })
       })
-    })
-      .then(() => { })
-      .catch((err) => {
-        console.log(err.message);
-      })
+        .catch((err) => {
+          console.log(err.message);
+        })
+    }
+
+    fetchNextQuestion();
   };
 
-  const quizzRouter = () => {
+  const quizzRouter = (): JSX.Element => {
 
     return (
       quizzSetupData.start === null &&
@@ -125,4 +129,5 @@ const QuizContainer = ({ cookie }: { cookie: QuizzSetupDataProps }) => {
     </div>
   );
 }
+
 export default QuizContainer;

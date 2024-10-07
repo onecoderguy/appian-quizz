@@ -3,7 +3,7 @@ import QuizzQuestionProps from "@/interfaces/QuizzQuestionProps";
 const QuizzQuestion = ({ question, onSelect }: {
     question: QuizzQuestionProps,
     onSelect: (answer: number) => void
-}) => {
+}): JSX.Element => {
 
     return (
         <div>

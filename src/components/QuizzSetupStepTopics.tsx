@@ -12,7 +12,7 @@ const QuizzSetupStepTopics = ({
 }: {
     handleQuizzSetupData: (newSetupData: QuizzSetupDataProps) => void,
     quizzSetupData: QuizzSetupDataProps
-}) => {
+}): JSX.Element => {
 
     const [topics, setTopics] = useState<QuizzSetupTopicProps[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -31,7 +31,7 @@ const QuizzSetupStepTopics = ({
         fetchTopics();
     }, []);
 
-    const toggleTopics = (toggledTopic: number) => {
+    const toggleTopics = (toggledTopic: number): void => {
         if (quizzSetupData.topics.includes(toggledTopic)) {
             const newTopicsSetupData = quizzSetupData
                 .topics

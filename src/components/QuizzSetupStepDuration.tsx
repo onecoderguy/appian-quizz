@@ -5,7 +5,7 @@ const QuizzSetupStepDuration = ({ quizzSetupData, handleQuizzSetupData, handleQu
     quizzSetupData: QuizzSetupDataProps,
     handleQuizzSetupData: (newSetupData: QuizzSetupDataProps) => void,
     handleQuizzStart: () => void
-}) => {
+}): JSX.Element => {
 
     return (
         <>

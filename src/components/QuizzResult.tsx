@@ -50,7 +50,12 @@ const QuizzResult = ({ selectedAnswers, questions, quizzSetupData }: {
                     ))}
                 </ul>
 
-                <div className="mt-3">
+                <div className="mt-3 space-x-1">
+                    <QuizzButton
+                        fn={() => saveResultsQuizz()}
+                        text="Salvar resultados"
+                    />
+
                     <QuizzButton
                         fn={() => resetQuizz()}
                         text="Reiniciar Quizz"
@@ -59,7 +64,7 @@ const QuizzResult = ({ selectedAnswers, questions, quizzSetupData }: {
             </div>
     }
 
-    const getResults = () => {
+    const getResults = (): number => {
         let countCorrects: number = 0;
 
         results.forEach((question, index) => {
@@ -73,8 +78,8 @@ const QuizzResult = ({ selectedAnswers, questions, quizzSetupData }: {
         return countCorrects;
     }
 
-    const resetQuizz = () => {
-        const fetchQuizzReset = (): void => {
+    const resetQuizz = async (): Promise<void> => {
+        const fetchResetQuizz = async (): Promise<void> => {
             fetch('/api/quizz-reset', {
                 method: 'GET'
             }).then(() => {
@@ -82,7 +87,7 @@ const QuizzResult = ({ selectedAnswers, questions, quizzSetupData }: {
             });
         }
 
-        fetchQuizzReset()
+        await fetchResetQuizz()
     }
 
     return (

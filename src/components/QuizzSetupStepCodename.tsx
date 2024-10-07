@@ -7,7 +7,7 @@ const QuizzSetupStepCodename = ({
 }: {
     handleQuizzSetupData: (newSetupData: QuizzSetupDataProps) => void,
     quizzSetupData: QuizzSetupDataProps
-}) => {
+}): JSX.Element => {
 
     return (
         <>

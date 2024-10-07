@@ -5,15 +5,15 @@ const QuizzResultQuestion = ({ question, result, selectedAnswerId }: {
     question: QuizzQuestionProps,
     result: QuizzQuestionProps,
     selectedAnswerId: number
-}) => {
+}): JSX.Element => {
 
-    const getSelectedAnswer = () => {
+    const getSelectedAnswer = (): string => {
         const selectedAnswer: QuizzAnswerProps = question.answers.filter((answer) => answer.id === selectedAnswerId)[0];
 
         return selectedAnswer?.answer ?? "Sem resposta, tempo esgotado.";
     }
 
-    const getCorrectAnswer = () => {
+    const getCorrectAnswer = (): string => {
         const selectedAnswer: QuizzAnswerProps = result.answers.filter((answer) => answer.correctAnswer)[0];
 
         return selectedAnswer.answer;
