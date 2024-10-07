@@ -90,6 +90,28 @@ const QuizzResult = ({ selectedAnswers, questions, quizzSetupData }: {
         await fetchResetQuizz()
     }
 
+    const saveResultsQuizz = async (): Promise<void> => {
+        const fetchSaveResultsQuizz = async (): Promise<void> => {
+            fetch('/api/quizz-save-result', {
+                method: 'POST',
+                body: JSON.stringify({
+                    quizzSetupData,
+                    selectedAnswers,
+                    questions: results
+                })
+            })
+                .then((res) => {
+                    console.log(res.json())
+                })
+                .catch((err) => {
+                    console.log(err.message)
+                });
+        }
+
+        await fetchSaveResultsQuizz();
+        await resetQuizz();
+    }
+
     return (
         router()
     );
