@@ -2,26 +2,32 @@ import { NextRequest, NextResponse } from "next/server";
 
 import conn from "@/services/db";
 
-import QuizzQuestionProps from "@/interfaces/QuizzQuestionProps";
-import QuizzSetupDataProps from "@/interfaces/QuizzSetupDataProps";
-
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
     try {
-        const { quizzSetupData, selectedAnswers, questions }: {
-            quizzSetupData: QuizzSetupDataProps,
-            selectedAnswers: number[],
-            questions: QuizzQuestionProps[]
+        const {
+            topics,
+            duration,
+            totalQuestions,
+            unansweredQuestions,
+            correctAnswers
+        }: {
+            topics: string[],
+            duration: number,
+            totalQuestions: number,
+            unansweredQuestions: number,
+            correctAnswers: number
         } = await req.json();
 
         await conn
             .promise()
             .query(
-                `INSERT INTO results (duration, topics, questions, selectedAnswers) VALUES (?, ?, ?, ?)`,
+                `INSERT INTO results (topics, duration, totalQuestions, correctAnswers, unansweredQuestions) VALUES (?, ?, ?, ?, ?)`,
                 [
-                    quizzSetupData.duration,
-                    quizzSetupData.topics,
-                    JSON.stringify(questions),
-                    selectedAnswers.toString()
+                    topics,
+                    duration,
+                    totalQuestions,
+                    correctAnswers,
+                    unansweredQuestions
                 ]
             );
 
