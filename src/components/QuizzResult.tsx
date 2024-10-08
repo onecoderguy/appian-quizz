@@ -62,7 +62,7 @@ const QuizzResult = ({ selectedAnswers, questions, quizzSetupData }: {
                     />
                 </div>
             </div>
-    }
+    };
 
     const getResults = (): number => {
         let countCorrects: number = 0;
@@ -76,33 +76,32 @@ const QuizzResult = ({ selectedAnswers, questions, quizzSetupData }: {
         });
 
         return countCorrects;
-    }
+    };
 
     const resetQuizz = async (): Promise<void> => {
         const fetchResetQuizz = async (): Promise<void> => {
             fetch('/api/quizz-reset', {
                 method: 'GET'
             }).then(() => {
-                window.location.reload()
+                window.location.reload();
             });
         }
 
-        await fetchResetQuizz()
-    }
+        await fetchResetQuizz();
+    };
 
     const saveResultsQuizz = async (): Promise<void> => {
         const fetchSaveResultsQuizz = async (): Promise<void> => {
             fetch('/api/quizz-save-result', {
                 method: 'POST',
                 body: JSON.stringify({
-                    quizzSetupData,
-                    selectedAnswers,
-                    questions: results
+                    topics: quizzSetupData.topics,
+                    duration: quizzSetupData.duration,
+                    totalQuestions: questions.length,
+                    unansweredQuestions: questions.length - selectedAnswers.length,
+                    correctAnswers: getResults()
                 })
             })
-                .then((res) => {
-                    console.log(res.json())
-                })
                 .catch((err) => {
                     console.log(err.message)
                 });
