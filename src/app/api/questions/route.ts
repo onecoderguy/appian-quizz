@@ -4,6 +4,16 @@ import { FieldPacket, RowDataPacket } from "mysql2";
 import conn from "@/services/db"
 
 import QuizzQuestionProps from "@/interfaces/QuizzQuestionProps";
+import QuizzAnswerProps from "@/interfaces/QuizzAnswerProps";
+
+const randomAnswers = (answers: QuizzAnswerProps[]) => {
+    for (let i = (answers.length - 1); i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [answers[i], answers[j]] = [answers[j], answers[i]];
+    }
+
+    return answers;
+}
 
 export const GET = async (request: NextRequest): Promise<NextResponse> => {
     try {
@@ -59,7 +69,7 @@ export const GET = async (request: NextRequest): Promise<NextResponse> => {
             id: row.id,
             topicId: row.topicId,
             question: row.question,
-            answers: JSON.parse(row.answers),
+            answers: randomAnswers(JSON.parse(row.answers)),
             correctAnswers: row.correctAnswers
         }));
 
