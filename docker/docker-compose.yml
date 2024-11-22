@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  mariadb:
+    container_name: appian-quizz-mariadb
+    image: mariadb:10.5
+    environment:
+      MARIADB_DATABASE: 'appian-quizz'
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1
+    volumes:
+      - ./:/docker-entrypoint-initdb.d
+      - appian_quizz_mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  appian_quizz_mariadb_data:
